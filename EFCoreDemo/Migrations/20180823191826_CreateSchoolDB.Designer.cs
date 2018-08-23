@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EFCoreDemo.Migrations
 {
-    [DbContext(typeof(Program.SchoolContext))]
+    [DbContext(typeof(SchoolContext))]
     [Migration("20180823191826_CreateSchoolDB")]
     partial class CreateSchoolDB
     {
