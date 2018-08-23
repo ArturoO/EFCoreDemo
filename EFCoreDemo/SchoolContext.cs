@@ -12,9 +12,7 @@ namespace EFCoreDemo
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=SchoolDB;Trusted_Connection=True;");
             optionsBuilder.UseSqlServer(@"Data Source=ARTUROO-PC;Initial Catalog=SchoolDB;Integrated Security=True;Pooling=False");
-            //Data Source=ARTUROO-PC;Initial Catalog=SchoolDB;Integrated Security=True;Pooling=False
         }
     }
 }
