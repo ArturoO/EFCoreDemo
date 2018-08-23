@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 
 namespace EFCoreDemo
 {
@@ -7,7 +8,17 @@ namespace EFCoreDemo
     {
         static void Main(string[] args)
         {
-            
+            ShowStudents();
+        }
+
+        public static void ShowStudents()
+        {
+            using (var context = new SchoolContext())
+            {
+                var students = context.Students.ToList();
+                foreach (var student in students)
+                    Console.WriteLine($"{student.StudentId}: {student.Name}");
+            }
         }
 
         public static void AddStudent()
@@ -17,7 +28,7 @@ namespace EFCoreDemo
 
                 var std = new Student()
                 {
-                    Name = "Bill"
+                    Name = "Jolene"
                 };
 
                 context.Students.Add(std);
