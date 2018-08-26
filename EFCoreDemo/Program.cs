@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace EFCoreDemo
@@ -8,7 +9,40 @@ namespace EFCoreDemo
     {
         static void Main(string[] args)
         {
-            ShowStudents();
+            List<string> commands = new List<string>() {
+                "exit",
+                "students-show",
+                "student-add",
+                "student-delete",
+            };
+            
+            Console.WriteLine("Welcome to EFCoreDemo application, please type your command.");
+            Console.WriteLine("Available commands: " + string.Join(',', commands.ToArray()));
+
+            while(true)
+            {
+                var cmd = Console.ReadLine();
+                if (cmd == "exit")
+                    break;
+                switch(cmd)
+                {
+                    case "students-show":
+                        ShowStudents();
+                        break;
+                    case "student-add":
+                        AddStudent();
+                        break;
+                    case "student-delete":
+                        DeleteStudent();
+                        break;
+                    default:
+                        Console.WriteLine("Incorrect command, please try again");
+                        break;
+                }
+            }
+            
+            Console.WriteLine("Goodbye.");
+            
         }
 
         public static void ShowStudents()
@@ -23,17 +57,42 @@ namespace EFCoreDemo
 
         public static void AddStudent()
         {
+            Console.WriteLine("Please provide student name");
+            var studentName = Console.ReadLine();
+            if(studentName=="")
+            {
+                Console.WriteLine("Error");
+                return;
+            }
             using (var context = new SchoolContext())
             {
-
                 var std = new Student()
                 {
-                    Name = "Jolene"
+                    Name = studentName
                 };
 
                 context.Students.Add(std);
                 context.SaveChanges();
             }
+            Console.WriteLine("Student added.");
+        }
+
+        public static void DeleteStudent()
+        {
+            Console.WriteLine("Please provide student id");
+            var studentId = int.Parse(Console.ReadLine());
+            if (studentId<=0)
+            {
+                Console.WriteLine("Error");
+                return;
+            }
+            using (var context = new SchoolContext())
+            {
+                var student = context.Students.First(x => x.StudentId == studentId);
+                context.Students.Remove(student);
+                context.SaveChanges();
+            }
+            Console.WriteLine("Student removed.");
         }
 
     }
