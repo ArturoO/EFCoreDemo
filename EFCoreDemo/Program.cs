@@ -9,13 +9,34 @@ namespace EFCoreDemo
     {
         static void Main(string[] args)
         {
+            
 
             //return Sewing course with all its students
+           
+
+            return;
+            UserInterface();
+        }
+
+        public static void FetchStudentAndItsCourse()
+        {
+            //return Monica student with information of her course
+            using (var context = new SchoolContext())
+            {
+                var student = context.Students
+                    .Include(x => x.Course)
+                    .Single(x => x.Name == "Monica");
+                Console.WriteLine($"Student id: {student.StudentId} of name: {student.Name} is attending course: {student.Course.CourseName}");
+            }
+        }
+
+        public static void FetchCourseAndItsStudents()
+        {
             using (var context = new SchoolContext())
             {
                 var course = context.Courses
                     .Include(x => x.Students)
-                    .Single(x => x.CourseName == "Sewing");
+                    .Single(x => x.CourseName == "Cooking");
                 Console.WriteLine($"Course id: {course.CourseId} and its name is: {course.CourseName}");
 
                 Console.WriteLine("Students attending the course:");
@@ -25,10 +46,8 @@ namespace EFCoreDemo
                 }
 
             }
-
-            return;
-            UserInterface();
         }
+
 
         public static void AddSampleData()
         {
