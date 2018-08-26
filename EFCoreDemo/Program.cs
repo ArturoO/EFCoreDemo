@@ -14,6 +14,7 @@ namespace EFCoreDemo
                 "students-show",
                 "student-add",
                 "student-delete",
+                "student-edit",
             };
             
             Console.WriteLine("Welcome to EFCoreDemo application, please type your command.");
@@ -34,6 +35,9 @@ namespace EFCoreDemo
                         break;
                     case "student-delete":
                         DeleteStudent();
+                        break;
+                    case "student-edit":
+                        EditStudent();
                         break;
                     default:
                         Console.WriteLine("Incorrect command, please try again");
@@ -93,6 +97,32 @@ namespace EFCoreDemo
                 context.SaveChanges();
             }
             Console.WriteLine("Student removed.");
+        }
+
+        public static void EditStudent()
+        {
+            Console.WriteLine("Please provide student id");
+            var studentId = int.Parse(Console.ReadLine());
+            if (studentId <= 0)
+            {
+                Console.WriteLine("Error");
+                return;
+            }
+            Console.WriteLine("Please provide student name");
+            var studentName = Console.ReadLine();
+            if (studentName == "")
+            {
+                Console.WriteLine("Error");
+                return;
+            }
+            using (var context = new SchoolContext())
+            {
+                var student = context.Students.First(x => x.StudentId == studentId);
+                student.Name = studentName;
+                context.Students.Update(student);
+                context.SaveChanges();
+            }
+            Console.WriteLine("Student updated.");
         }
 
     }
