@@ -9,14 +9,15 @@ namespace EFCoreDemo
     {
         static void Main(string[] args)
         {
+
             
 
-            //return Sewing course with all its students
-           
 
             return;
             UserInterface();
         }
+
+
 
         public static void FetchStudentAndItsCourse()
         {
@@ -27,6 +28,52 @@ namespace EFCoreDemo
                     .Include(x => x.Course)
                     .Single(x => x.Name == "Monica");
                 Console.WriteLine($"Student id: {student.StudentId} of name: {student.Name} is attending course: {student.Course.CourseName}");
+            }
+        }
+
+        public static void AddStudentToCourseAndThenRemoveHim()
+        {
+            using (var context = new SchoolContext())
+            {
+                var course = context.Courses
+                    .Include(x => x.Students)
+                    .Single(x => x.CourseName == "Cooking");
+                Console.WriteLine($"Course id: {course.CourseId} and its name is: {course.CourseName}");
+
+                Console.WriteLine("Students attending the course:");
+                foreach (var student in course.Students)
+                {
+                    Console.WriteLine($"Student id: {student.StudentId}, name: {student.Name}, gender: {student.Gender}, age: {student.Age}");
+                }
+
+
+                Console.WriteLine("New student is attending course, updated list:");
+                var studentRon = new Student()
+                {
+                    Name = "Ron",
+                    Age = 17,
+                    Gender = "male",
+                };
+                course.Students.Add(studentRon);
+                context.SaveChanges();
+                course = context.Courses
+                    .Include(x => x.Students)
+                    .Single(x => x.CourseName == "Cooking");
+                foreach (var student in course.Students)
+                {
+                    Console.WriteLine($"Student id: {student.StudentId}, name: {student.Name}, gender: {student.Gender}, age: {student.Age}");
+                }
+
+                Console.WriteLine("Student has resigned, updated list:");
+                course.Students.Remove(studentRon);
+                context.SaveChanges();
+                course = context.Courses
+                    .Include(x => x.Students)
+                    .Single(x => x.CourseName == "Cooking");
+                foreach (var student in course.Students)
+                {
+                    Console.WriteLine($"Student id: {student.StudentId}, name: {student.Name}, gender: {student.Gender}, age: {student.Age}");
+                }
             }
         }
 
