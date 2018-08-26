@@ -9,15 +9,47 @@ namespace EFCoreDemo
     {
         static void Main(string[] args)
         {
-
-            
-
-
             return;
             UserInterface();
         }
 
+        public static void CreateStudentAndCourseThenRemoveStudent()
+        {
+            using (var context = new SchoolContext())
+            {
+                //add new course and a student. 
+                //assign student to course
+                //save changes
+                //var ChessCourse = new Course() {
+                //    CourseName = "Chess",
+                //};
+                //var StudentAnthony = new Student()
+                //{
+                //    Name = "Anthony",
+                //    Age = 22,
+                //    Gender = "male",
+                //};
+                //ChessCourse.Students.Add(StudentAnthony);
+                //context.Courses.Add(ChessCourse);
+                //context.SaveChanges();
 
+                //remove student from course
+                //student will still exist in the db table
+                var course = context.Courses
+                    .Include(x => x.Students)
+                    .Single(x => x.CourseName == "Chess");
+
+                var studentAnthony = course.Students.Single(x => x.Name == "Anthony");
+                course.Students.Remove(studentAnthony);
+                context.SaveChanges();
+
+
+                //var student = context.Students
+                //    .Include(x => x.Course)
+                //    .Single(x => x.Name == "Monica");
+                //Console.WriteLine($"Student id: {student.StudentId} of name: {student.Name} is attending course: {student.Course.CourseName}");
+            }
+        }
 
         public static void FetchStudentAndItsCourse()
         {
