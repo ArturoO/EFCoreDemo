@@ -9,6 +9,65 @@ namespace EFCoreDemo
     {
         static void Main(string[] args)
         {
+            var course1 = new Course() {
+                CourseName = "Cooking",
+            };
+            var course2 = new Course() {
+                CourseName = "Sewing",
+            };
+            var student1 = new Student() {
+                Name = "Adam",
+                Gender = "male",
+                Age = 17,
+                Course = course1,
+            };
+            var student2 = new Student()
+            {
+                Name = "Monica",
+                Gender = "female",
+                Age = 18,
+                Course = course1,
+            };
+            var student3 = new Student()
+            {
+                Name = "John",
+                Gender = "male",
+                Age = 16,
+                Course = course2,
+            };
+            var student4 = new Student()
+            {
+                Name = "Alice",
+                Gender = "female",
+                Age = 19,
+                Course = course2,
+            };
+            var student5 = new Student()
+            {
+                Name = "Ron",
+                Gender = "male",
+                Age = 20,
+                Course = course1,
+            };
+            using (var context = new SchoolContext())
+            {
+                context.Courses.Add(course1);
+                context.Courses.Add(course2);
+                context.Students.Add(student1);
+                context.Students.Add(student2);
+                context.Students.Add(student3);
+                context.Students.Add(student4);
+                context.Students.Add(student5);
+                context.SaveChanges();
+            }
+
+
+            return;
+            UserInterface();
+        }
+
+        public static void UserInterface()
+        {
             List<string> commands = new List<string>() {
                 "exit",
                 "students-show",
@@ -16,16 +75,16 @@ namespace EFCoreDemo
                 "student-delete",
                 "student-edit",
             };
-            
+
             Console.WriteLine("Welcome to EFCoreDemo application, please type your command.");
             Console.WriteLine("Available commands: " + string.Join(',', commands.ToArray()));
 
-            while(true)
+            while (true)
             {
                 var cmd = Console.ReadLine();
                 if (cmd == "exit")
                     break;
-                switch(cmd)
+                switch (cmd)
                 {
                     case "students-show":
                         ShowStudents();
@@ -44,9 +103,8 @@ namespace EFCoreDemo
                         break;
                 }
             }
-            
+
             Console.WriteLine("Goodbye.");
-            
         }
 
         public static void ShowStudents()
