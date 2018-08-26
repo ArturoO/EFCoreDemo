@@ -9,13 +9,39 @@ namespace EFCoreDemo
     {
         static void Main(string[] args)
         {
-            var course1 = new Course() {
+
+            //return Sewing course with all its students
+            using (var context = new SchoolContext())
+            {
+                var course = context.Courses
+                    .Include(x => x.Students)
+                    .Single(x => x.CourseName == "Sewing");
+                Console.WriteLine($"Course id: {course.CourseId} and its name is: {course.CourseName}");
+
+                Console.WriteLine("Students attending the course:");
+                foreach (var student in course.Students)
+                {
+                    Console.WriteLine($"Student id: {student.StudentId}, name: {student.Name}, gender: {student.Gender}, age: {student.Age}");
+                }
+
+            }
+
+            return;
+            UserInterface();
+        }
+
+        public static void AddSampleData()
+        {
+            var course1 = new Course()
+            {
                 CourseName = "Cooking",
             };
-            var course2 = new Course() {
+            var course2 = new Course()
+            {
                 CourseName = "Sewing",
             };
-            var student1 = new Student() {
+            var student1 = new Student()
+            {
                 Name = "Adam",
                 Gender = "male",
                 Age = 17,
@@ -60,10 +86,6 @@ namespace EFCoreDemo
                 context.Students.Add(student5);
                 context.SaveChanges();
             }
-
-
-            return;
-            UserInterface();
         }
 
         public static void UserInterface()
